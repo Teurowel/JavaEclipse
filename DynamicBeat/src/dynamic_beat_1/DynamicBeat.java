@@ -34,6 +34,9 @@ public class DynamicBeat extends JFrame
 		TitleBackground = new ImageIcon(Main.class.getResource("../Assets/Images/TitleBackground.jpg")).getImage();
 		
 		
+		//Create title music
+		Music titleMusic = new Music("TitleMusic.mp3", true);
+		titleMusic.start();
 	}
 	
 	

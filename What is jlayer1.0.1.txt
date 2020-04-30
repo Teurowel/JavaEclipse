@@ -1,0 +1,10 @@
+jlayer1.0.1 is for player .mp3 in Eclips.
+
+This is external library.
+
+We need jl1.0.1.jar in jlayer1.0.1 -> jLayer1.0.1
+
+
+How to set libraries
+
+Right click project -> Build Path -> Configure Build Path -> Java Bild Path -> Libraries tap -> Add External JARs
