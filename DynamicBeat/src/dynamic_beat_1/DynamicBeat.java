@@ -20,17 +20,25 @@ public class DynamicBeat extends JFrame
 	private Graphics screenGraphic;
 	
 	//Based on Main class source file location, load image and get image instance
-	private Image TitleBackground = new ImageIcon(Main.class.getResource("../Assets/Images/TitleBackground.jpg")).getImage();
+	private Image Background = new ImageIcon(Main.class.getResource("../Assets/Images/TitleBackground.jpg")).getImage();
 	
 	//Menu bar
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../Assets/Images/menuBar.png")));
 	
-	//Button
+	//ExitButton
 	private ImageIcon exitButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/ExitButtonBasic.png"));
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/ExitButtonEntered.png"));
 	private JButton exitButton = new JButton(exitButtonBasicImage);
 	
+	//StartButton
+	private ImageIcon startButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/StartButtonBasic.png"));
+	private ImageIcon startButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/StartButtonEntered.png"));
+	private JButton startButton = new JButton(startButtonBasicImage);
 	
+	//QuitButton
+	private ImageIcon quitButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/QuitButtonBasic.png"));
+	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/QuitButtonEntered.png"));
+	private JButton quitButton = new JButton(quitButtonBasicImage);
 	
 	//Mouse X, Y
 	private int mouseX, mouseY;
@@ -64,6 +72,7 @@ public class DynamicBeat extends JFrame
 		
 //////////////////////////////////////// UI ////////////////////////////////////////////////////////////////////////////////
 	
+		//////////////////////////////////////////Exit Button////////////////////////////////////////////////////////////
 		//Add Exit button
 		exitButton.setBounds(1245, 0, 30, 30);
 		//테두리에 선있는거 업애기
@@ -106,10 +115,94 @@ public class DynamicBeat extends JFrame
 			}
 		});
 		add(exitButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////Start Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		startButton.setBounds(800, 450, 400, 100);
+		//테두리에 선있는거 업애기
+		startButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		startButton.setContentAreaFilled(false);
+		startButton.setFocusPainted(false);
+		startButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				startButton.setIcon(startButtonEnteredImage);
+				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				startButton.setIcon(startButtonBasicImage);
+				startButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				startButton.setVisible(false);
+				quitButton.setVisible(false);
+				
+				Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
+			}
+		});
+		add(startButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////Quit Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		quitButton.setBounds(800, 570, 400, 100);
+		//테두리에 선있는거 업애기
+		quitButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		quitButton.setContentAreaFilled(false);
+		quitButton.setFocusPainted(false);
+		quitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				quitButton.setIcon(quitButtonEnteredImage);
+				quitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				quitButton.setIcon(quitButtonBasicImage);
+				quitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				//Music buttonPressedSound = new Music("ButtonPressedSound.mp3", false);
+				//buttonPressedSound.start();
+				
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch(InterruptedException ex)
+				{
+					ex.printStackTrace();
+				}
+				
+				System.exit(0);
+			}
+		});
+		add(quitButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		
 		
 		
 		
+////////////////////////////////////////////////////////////Menu Bar////////////////////////////////////////////////////////////
 		//set menubar's position and size
 		menuBar.setBounds(0, 0, 1280, 30);
 		
@@ -135,7 +228,7 @@ public class DynamicBeat extends JFrame
 		});
 		//Add menubar in JFrame
 		add(menuBar);
-		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
@@ -173,7 +266,7 @@ public class DynamicBeat extends JFrame
 	public void screenDraw(Graphics g)
 	{
 		//단순한 background image같은건 drawimage로
-		g.drawImage(TitleBackground, 0, 0, null);
+		g.drawImage(Background, 0, 0, null);
 		
 		//고정된 메뉴바나 움직이지않는 역동적이지않은 UI같은건 paintComponents를 이용해서 그려야한다
 		paintComponents(g);
