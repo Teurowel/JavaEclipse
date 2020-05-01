@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,7 +22,7 @@ public class DynamicBeat extends JFrame
 	
 	//Based on Main class source file location, load image and get image instance
 	private Image Background = new ImageIcon(Main.class.getResource("../Assets/Images/TitleBackground.jpg")).getImage();
-	private Image selectedImage = new ImageIcon(Main.class.getResource("../Assets/Images/KonosubaStartImage.png")).getImage();
+	private Image selectedImage;
 	
 	//Menu bar
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../Assets/Images/menuBar.png")));
@@ -56,6 +57,18 @@ public class DynamicBeat extends JFrame
 	
 	//is main?
 	private boolean isMainScreen = false;
+	
+	//Music
+	private Music titleMusic = new Music("TitleMusic.mp3", true);
+	private Music selectedMusic;
+	
+	
+	//Array of track
+	private ArrayList<Track> trackList = new ArrayList<Track>();
+	
+	//Current selected song's idx
+	private int nowSelected = 0; 
+	
 	public DynamicBeat()
 	{
 		
@@ -81,7 +94,17 @@ public class DynamicBeat extends JFrame
 		setLayout(null);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		CreateButton();		
+	//Title music Start
+	titleMusic.start();
+
+	
+	//Create Buttons
+	CreateButton();
+	
+	//Add trakcs
+	AddTrack("KonosubaStartImage.png", "KonosubaGameImage.png", "Konosuba_Tendon.mp3");
+	AddTrack("DanshiStartImage.png", "DanshiGameImage.png", "Danshi_HighSchoolBoysandBoyhood.mp3");
+	AddTrack("AbyssStartImage.png", "AbyssGameImage.png", "Abyss_DaysintheSun.mp3");
 		
 		
 ////////////////////////////////////////////////////////////Menu Bar////////////////////////////////////////////////////////////
@@ -116,12 +139,7 @@ public class DynamicBeat extends JFrame
 		
 		
 		
-//////////////////////////////////////// Music ////////////////////////////////////////////////////////////////////////////////
-		//Create title music
-		Music titleMusic = new Music("TitleMusic.mp3", true);
-		titleMusic.start();
-		
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	}
 	
 	private void CreateButton()
@@ -200,12 +218,15 @@ public class DynamicBeat extends JFrame
 			{
 				isMainScreen = true;
 				
+				titleMusic.close();
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
 				rightButton.setVisible(true);
 				
 				Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
+				
+				selectTrack(0);
 				
 				
 			}
@@ -286,7 +307,7 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				
+				selectLeft();
 			}
 		});
 		
@@ -321,7 +342,7 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-
+				selectRight();
 			}
 		});
 		add(rightButton);
@@ -360,5 +381,51 @@ public class DynamicBeat extends JFrame
 		paintComponents(g);
 		
 		this.repaint();
+	}
+	
+	public void selectTrack(int nowSelected)
+	{
+		if(selectedMusic != null)
+		{
+			selectedMusic.close();
+		}
+		
+		selectedImage = new ImageIcon(Main.class.getResource("../Assets/Images/" + trackList.get(nowSelected).getStartImage())).getImage();
+		selectedMusic = new Music(trackList.get(nowSelected).getGameMusic(), true);
+		selectedMusic.start();
+		
+	}
+	
+	public void AddTrack(String startImage, String gameImage, String gameMusic)
+	{
+		trackList.add(new Track(startImage, gameImage, gameMusic));
+	}
+	
+	public void selectLeft()
+	{
+		if(nowSelected == 0)
+		{
+			nowSelected = trackList.size() - 1;
+		}
+		else
+		{
+			nowSelected--;
+		}
+		
+		selectTrack(nowSelected);
+	}
+	
+	public void selectRight()
+	{
+		if(nowSelected == trackList.size() - 1)
+		{
+			nowSelected = 0;
+		}
+		else
+		{
+			nowSelected++;
+		}
+		
+		selectTrack(nowSelected);
 	}
 }
