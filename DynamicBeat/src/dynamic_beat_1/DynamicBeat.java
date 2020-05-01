@@ -21,6 +21,7 @@ public class DynamicBeat extends JFrame
 	
 	//Based on Main class source file location, load image and get image instance
 	private Image Background = new ImageIcon(Main.class.getResource("../Assets/Images/TitleBackground.jpg")).getImage();
+	private Image selectedImage = new ImageIcon(Main.class.getResource("../Assets/Images/KonosubaStartImage.png")).getImage();
 	
 	//Menu bar
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../Assets/Images/menuBar.png")));
@@ -40,8 +41,21 @@ public class DynamicBeat extends JFrame
 	private ImageIcon quitButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/QuitButtonEntered.png"));
 	private JButton quitButton = new JButton(quitButtonBasicImage);
 	
+	//Left button
+	private ImageIcon leftButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/leftButtonBasic.png"));
+	private ImageIcon leftButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/leftButtonEntered.png"));
+	private JButton leftButton = new JButton(leftButtonBasicImage);
+	
+	//Right BUtton
+	private ImageIcon rightButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/rightButtonBasic.png"));
+	private ImageIcon rightButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/rightButtonEntered.png"));
+	private JButton rightButton = new JButton(rightButtonBasicImage);
+
 	//Mouse X, Y
 	private int mouseX, mouseY;
+	
+	//is main?
+	private boolean isMainScreen = false;
 	public DynamicBeat()
 	{
 		
@@ -67,11 +81,51 @@ public class DynamicBeat extends JFrame
 		setLayout(null);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
+		CreateButton();		
+		
+		
+////////////////////////////////////////////////////////////Menu Bar////////////////////////////////////////////////////////////
+		//set menubar's position and size
+		menuBar.setBounds(0, 0, 1280, 30);
+		
+		//메뉴바에 마우스 클릭좌표 얻어올수있게 추가
+		menuBar.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				mouseX = e.getX();
+				mouseY = e.getY();
+			}
+		});
+		
+		//메뉴바에 마우스 드래그
+		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				int x = e.getXOnScreen();
+				int y = e.getYOnScreen();
+				setLocation(x - mouseX, y - mouseY);
+			}
+		});
+		//Add menubar in JFrame
+		add(menuBar);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		
 		
 		
-//////////////////////////////////////// UI ////////////////////////////////////////////////////////////////////////////////
+		
+//////////////////////////////////////// Music ////////////////////////////////////////////////////////////////////////////////
+		//Create title music
+		Music titleMusic = new Music("TitleMusic.mp3", true);
+		titleMusic.start();
+		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
 	
+	private void CreateButton()
+	{
 		//////////////////////////////////////////Exit Button////////////////////////////////////////////////////////////
 		//Add Exit button
 		exitButton.setBounds(1245, 0, 30, 30);
@@ -144,10 +198,16 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
+				isMainScreen = true;
+				
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
+				leftButton.setVisible(true);
+				rightButton.setVisible(true);
 				
 				Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
+				
+				
 			}
 		});
 		add(startButton);
@@ -197,54 +257,76 @@ public class DynamicBeat extends JFrame
 		});
 		add(quitButton);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////Left Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		leftButton.setBounds(140, 310, 60, 60);
+		//테두리에 선있는거 업애기
+		leftButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		leftButton.setContentAreaFilled(false);
+		leftButton.setFocusPainted(false);
+		leftButton.setVisible(false);
+		leftButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				leftButton.setIcon(leftButtonEnteredImage);
+				leftButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				leftButton.setIcon(leftButtonBasicImage);
+				leftButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
 
-		
-		
-		
-		
-////////////////////////////////////////////////////////////Menu Bar////////////////////////////////////////////////////////////
-		//set menubar's position and size
-		menuBar.setBounds(0, 0, 1280, 30);
-		
-		//메뉴바에 마우스 클릭좌표 얻어올수있게 추가
-		menuBar.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				mouseX = e.getX();
-				mouseY = e.getY();
+				
 			}
 		});
 		
-		//메뉴바에 마우스 드래그
-		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
+		add(leftButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////Right Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		rightButton.setBounds(1080, 310, 60, 60);
+		//테두리에 선있는거 업애기
+		rightButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		rightButton.setContentAreaFilled(false);
+		rightButton.setFocusPainted(false);
+		rightButton.setVisible(false);
+		rightButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseDragged(MouseEvent e)
+			public void mouseEntered(MouseEvent e)
 			{
-				int x = e.getXOnScreen();
-				int y = e.getYOnScreen();
-				setLocation(x - mouseX, y - mouseY);
+				rightButton.setIcon(rightButtonEnteredImage);
+				rightButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				rightButton.setIcon(rightButtonBasicImage);
+				rightButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+
 			}
 		});
-		//Add menubar in JFrame
-		add(menuBar);
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//////////////////////////////////////// Music ////////////////////////////////////////////////////////////////////////////////
-		//Create title music
-		Music titleMusic = new Music("TitleMusic.mp3", true);
-		titleMusic.start();
-		
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		add(rightButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	}
 	
 	
@@ -268,7 +350,13 @@ public class DynamicBeat extends JFrame
 		//단순한 background image같은건 drawimage로
 		g.drawImage(Background, 0, 0, null);
 		
-		//고정된 메뉴바나 움직이지않는 역동적이지않은 UI같은건 paintComponents를 이용해서 그려야한다
+		if(isMainScreen)
+		{
+			g.drawImage(selectedImage, 340, 100, null);
+		}
+		
+		
+		//JFrame에 추가된것들(Add를이용해서) Button, Menubar, etc... 그리기
 		paintComponents(g);
 		
 		this.repaint();
