@@ -51,6 +51,16 @@ public class DynamicBeat extends JFrame
 	private ImageIcon rightButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/rightButtonBasic.png"));
 	private ImageIcon rightButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/rightButtonEntered.png"));
 	private JButton rightButton = new JButton(rightButtonBasicImage);
+	
+	//Easy BUtton
+	private ImageIcon easyButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/easyButtonBasic.png"));
+	private ImageIcon easyButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/easyButtonEntered.png"));
+	private JButton easyButton = new JButton(easyButtonBasicImage);
+	
+	//Hard BUtton
+	private ImageIcon hardButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/hardButtonBasic.png"));
+	private ImageIcon hardButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/hardButtonEntered.png"));
+	private JButton hardButton = new JButton(hardButtonBasicImage);
 
 	//Mouse X, Y
 	private int mouseX, mouseY;
@@ -223,6 +233,8 @@ public class DynamicBeat extends JFrame
 				quitButton.setVisible(false);
 				leftButton.setVisible(true);
 				rightButton.setVisible(true);
+				easyButton.setVisible(true);
+				hardButton.setVisible(true);
 				
 				Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
 				
@@ -347,7 +359,78 @@ public class DynamicBeat extends JFrame
 		});
 		add(rightButton);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////Easy Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		easyButton.setBounds(375, 580, 250, 67);
+		//테두리에 선있는거 업애기
+		easyButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		easyButton.setContentAreaFilled(false);
+		easyButton.setFocusPainted(false);
+		easyButton.setVisible(false);
+		easyButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				easyButton.setIcon(easyButtonEnteredImage);
+				easyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				easyButton.setIcon(easyButtonBasicImage);
+				easyButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
 
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				GameStart(nowSelected, "easy");
+			}
+		});
+		add(easyButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		//////////////////////////////////////////Hard Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		hardButton.setBounds(655, 580, 250, 67);
+		//테두리에 선있는거 업애기
+		hardButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		hardButton.setContentAreaFilled(false);
+		hardButton.setFocusPainted(false);
+		hardButton.setVisible(false);
+		hardButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				hardButton.setIcon(hardButtonEnteredImage);
+				hardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				hardButton.setIcon(hardButtonBasicImage);
+				hardButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				GameStart(nowSelected, "hard");
+			}
+		});
+		add(hardButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		
+		
 	}
 	
 	
@@ -427,5 +510,22 @@ public class DynamicBeat extends JFrame
 		}
 		
 		selectTrack(nowSelected);
+	}
+	
+	public void GameStart(int nowSelected, String difficulty)
+	{
+		if(selectedMusic != null)
+		{
+			selectedMusic.close();
+		}
+		
+		isMainScreen = false;
+		leftButton.setVisible(false);
+		rightButton.setVisible(false);
+		easyButton.setVisible(false);
+		hardButton.setVisible(false);
+		
+		Background = new ImageIcon(Main.class.getResource("../Assets/Images/" + trackList.get(nowSelected).getGameImage())).getImage();
+		
 	}
 }
