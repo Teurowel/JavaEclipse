@@ -61,6 +61,11 @@ public class DynamicBeat extends JFrame
 	private ImageIcon hardButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/hardButtonBasic.png"));
 	private ImageIcon hardButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/hardButtonEntered.png"));
 	private JButton hardButton = new JButton(hardButtonBasicImage);
+	
+	//Back BUtton
+	private ImageIcon backButtonBasicImage = new ImageIcon(Main.class.getResource("../Assets/Images/backButtonBasic.png"));
+	private ImageIcon backButtonEnteredImage = new ImageIcon(Main.class.getResource("../Assets/Images/backButtonEntered.png"));
+	private JButton backButton = new JButton(backButtonBasicImage);
 
 	//Mouse X, Y
 	private int mouseX, mouseY;
@@ -103,18 +108,18 @@ public class DynamicBeat extends JFrame
 		
 		setLayout(null);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		//Load trakcs
+		LoadTracks();
+			
+		//Title music Start
+		titleMusic.start();
 		
-	//Title music Start
-	titleMusic.start();
-
-	
-	//Create Buttons
-	CreateButton();
-	
-	//Add trakcs
-	AddTrack("KonosubaStartImage.png", "KonosubaGameImage.png", "Konosuba_Tendon.mp3");
-	AddTrack("DanshiStartImage.png", "DanshiGameImage.png", "Danshi_HighSchoolBoysandBoyhood.mp3");
-	AddTrack("AbyssStartImage.png", "AbyssGameImage.png", "Abyss_DaysintheSun.mp3");
+		//Create Buttons
+		CreateButton();
+		
+		//Add trakcs
+		
 		
 		
 ////////////////////////////////////////////////////////////Menu Bar////////////////////////////////////////////////////////////
@@ -226,21 +231,7 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				isMainScreen = true;
-				
-				titleMusic.close();
-				startButton.setVisible(false);
-				quitButton.setVisible(false);
-				leftButton.setVisible(true);
-				rightButton.setVisible(true);
-				easyButton.setVisible(true);
-				hardButton.setVisible(true);
-				
-				Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
-				
-				selectTrack(0);
-				
-				
+				EnterMain();				
 			}
 		});
 		add(startButton);
@@ -430,6 +421,40 @@ public class DynamicBeat extends JFrame
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		
+		//////////////////////////////////////////Back Button////////////////////////////////////////////////////////////
+		//Add Exit button
+		backButton.setBounds(20, 50, 60, 60);
+		//테두리에 선있는거 업애기
+		backButton.setBorderPainted(false);
+		//사진 사각형으로 둘러싸는거 없애기
+		backButton.setContentAreaFilled(false);
+		backButton.setFocusPainted(false);
+		backButton.setVisible(false);
+		backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				backButton.setIcon(backButtonEnteredImage);
+				backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				backButton.setIcon(backButtonBasicImage);
+				backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				BackMain();
+			}
+		});
+		add(backButton);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		
 	}
 	
@@ -466,6 +491,23 @@ public class DynamicBeat extends JFrame
 		this.repaint();
 	}
 	
+	public void EnterMain()
+	{
+		isMainScreen = true;
+		
+		titleMusic.close();
+		startButton.setVisible(false);
+		quitButton.setVisible(false);
+		leftButton.setVisible(true);
+		rightButton.setVisible(true);
+		easyButton.setVisible(true);
+		hardButton.setVisible(true);
+		
+		Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
+		
+		selectTrack(0);	
+	}
+	
 	public void selectTrack(int nowSelected)
 	{
 		if(selectedMusic != null)
@@ -477,6 +519,13 @@ public class DynamicBeat extends JFrame
 		selectedMusic = new Music(trackList.get(nowSelected).getGameMusic(), true);
 		selectedMusic.start();
 		
+	}
+	
+	public void LoadTracks()
+	{
+		AddTrack("KonosubaStartImage.png", "KonosubaGameImage.png", "Konosuba_Tendon.mp3");
+		AddTrack("DanshiStartImage.png", "DanshiGameImage.png", "Danshi_HighSchoolBoysandBoyhood.mp3");
+		AddTrack("AbyssStartImage.png", "AbyssGameImage.png", "Abyss_DaysintheSun.mp3");
 	}
 	
 	public void AddTrack(String startImage, String gameImage, String gameMusic)
@@ -524,8 +573,23 @@ public class DynamicBeat extends JFrame
 		rightButton.setVisible(false);
 		easyButton.setVisible(false);
 		hardButton.setVisible(false);
+		backButton.setVisible(true);
 		
 		Background = new ImageIcon(Main.class.getResource("../Assets/Images/" + trackList.get(nowSelected).getGameImage())).getImage();
+	}
+	
+	public void BackMain()
+	{
+		isMainScreen = true;
 		
+		leftButton.setVisible(true);
+		rightButton.setVisible(true);
+		easyButton.setVisible(true);
+		hardButton.setVisible(true);
+		backButton.setVisible(false);
+		
+		Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
+		
+		selectTrack(nowSelected);
 	}
 }
