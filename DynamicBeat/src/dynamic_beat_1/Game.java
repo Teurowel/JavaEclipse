@@ -26,6 +26,20 @@ public class Game extends Thread
 	private Image noteRouteKImage = noteRouteImage;
 	private Image noteRouteLImage = noteRouteImage;
 	
+	private String songName;
+	private String difficulty;
+	
+	private Music gameMusic;
+	
+	public Game(String songName, String difficulty)
+	{
+		this.songName = songName;
+		this.difficulty = difficulty;
+		
+		gameMusic = new Music(this.songName, false);
+		gameMusic.start();
+	}
+	
 	public void ScreenDraw(Graphics2D g)
 	{
 		//Note Route
@@ -58,10 +72,10 @@ public class Game extends Thread
 		g.setFont(new Font("Arial", Font.BOLD, 30));
 		
 		//Song's name
-		g.drawString("Name", 20, 702);
+		g.drawString(songName, 20, 702);
 		
 		//Difficulty
-		g.drawString("Difficulty", 1190, 702);
+		g.drawString(difficulty, 1190, 702);
 		
 		//KeyBoard
 		g.setColor(Color.DARK_GRAY);
@@ -170,5 +184,12 @@ public class Game extends Thread
 	public void releaseL()
 	{
 		noteRouteLImage = noteRouteImage;
+	}
+	
+	public void close()
+	{
+		this.interrupt();
+		
+		gameMusic.close();
 	}
 }

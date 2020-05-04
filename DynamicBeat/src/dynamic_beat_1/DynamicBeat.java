@@ -89,7 +89,7 @@ public class DynamicBeat extends JFrame
 	private int nowSelected = 0; 
 	
 	//Game
-	public static Game game = new Game();
+	public static Game game;
 
 	public DynamicBeat()
 	{
@@ -428,7 +428,7 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				GameStart(nowSelected, "easy");
+				GameStart(nowSelected, "Easy");
 			}
 		});
 		add(easyButton);
@@ -463,7 +463,7 @@ public class DynamicBeat extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				GameStart(nowSelected, "hard");
+				GameStart(nowSelected, "Hard");
 			}
 		});
 		add(hardButton);
@@ -598,6 +598,9 @@ public class DynamicBeat extends JFrame
 		//Set focus for keyinput
 		setFocusable(true);
 		requestFocus();
+		
+		//create Game
+		game = new Game(trackList.get(nowSelected).getGameMusic(), difficulty);
 	}
 	
 	public void BackMain()
@@ -614,5 +617,7 @@ public class DynamicBeat extends JFrame
 		Background = new ImageIcon(Main.class.getResource("../Assets/Images/MainBackground.jpg")).getImage();
 		
 		selectTrack(nowSelected);
+		
+		game.close();
 	}
 }
