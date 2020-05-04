@@ -5,11 +5,13 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
 public class Game extends Thread
 {
+	/////////////////////////////////////Images/////////////////////////////////////////////
 	private Image gameInfoImage = new ImageIcon(Main.class.getResource("../Assets/Images/GameInfo.png")).getImage();
 	private Image judgementLineImage = new ImageIcon(Main.class.getResource("../Assets/Images/JudgementLine.png")).getImage();
 	private Image noteRouteLineImage = new ImageIcon(Main.class.getResource("../Assets/Images/NoteRouteLine.png")).getImage();
@@ -25,11 +27,18 @@ public class Game extends Thread
 	private Image noteRouteJImage = noteRouteImage;
 	private Image noteRouteKImage = noteRouteImage;
 	private Image noteRouteLImage = noteRouteImage;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	
+	//Song name, difficulty
 	private String songName;
 	private String difficulty;
 	
+	//Game Music
 	private Music gameMusic;
+	
+	//Array of Notes
+	ArrayList<Note> noteList = new ArrayList<Note>();
 	
 	public Game(String songName, String difficulty)
 	{
@@ -38,6 +47,8 @@ public class Game extends Thread
 		
 		gameMusic = new Music(this.songName, false);
 		gameMusic.start();
+		
+		dropNotes(songName);
 	}
 	
 	public void ScreenDraw(Graphics2D g)
@@ -92,6 +103,13 @@ public class Game extends Thread
 		g.setColor(Color.LIGHT_GRAY);
 		g.setFont(new Font("Elephant", Font.BOLD, 30));
 		g.drawString("Score", 565, 702);
+		
+		//Notes
+		for(int i = 0; i < noteList.size(); ++i) 
+		{
+			Note note = noteList.get(i);
+			note.screenDraw(g);
+		}
 	}
 	
 	@Override
@@ -192,4 +210,13 @@ public class Game extends Thread
 		
 		gameMusic.close();
 	}
+	
+	public void dropNotes(String songName)
+	{
+		Note note = new Note(228, "short");
+		note.start();
+		noteList.add(note);
+		
+	}
+	
 }
