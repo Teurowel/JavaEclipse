@@ -202,6 +202,15 @@ public class DynamicBeat extends JFrame
 		//JFrame에 추가된것들(Add를이용해서) Button, Menubar, etc... 그리기
 		paintComponents(g);
 		
+		try
+		{
+			Thread.sleep(5);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		this.repaint();
 	}
 	
@@ -601,6 +610,7 @@ public class DynamicBeat extends JFrame
 		
 		//create Game
 		game = new Game(trackList.get(nowSelected).getGameMusic(), difficulty);
+		game.start();
 	}
 	
 	public void BackMain()

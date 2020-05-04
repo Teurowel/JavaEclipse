@@ -40,15 +40,18 @@ public class Game extends Thread
 	//Array of Notes
 	ArrayList<Note> noteList = new ArrayList<Note>();
 	
+	//Array of beats
+	Beat[] beats = null;
+	
 	public Game(String songName, String difficulty)
 	{
 		this.songName = songName;
 		this.difficulty = difficulty;
 		
-		gameMusic = new Music(this.songName, false);
+		gameMusic = new Music(this.songName, false);		
+		createNotes();
 		gameMusic.start();
 		
-		dropNotes(songName);
 	}
 	
 	public void ScreenDraw(Graphics2D g)
@@ -115,7 +118,7 @@ public class Game extends Thread
 	@Override
 	public void run()
 	{
-		
+		dropNotes();
 	}
 	
 	public void pressS()
@@ -211,11 +214,56 @@ public class Game extends Thread
 		gameMusic.close();
 	}
 	
-	public void dropNotes(String songName)
+	public void createNotes()
 	{
-		Note note = new Note(228, "short");
-		note.start();
-		noteList.add(note);
+		if(songName.equals("Konosuba_Tendon.mp3"))
+		{
+			int startTime = 1000 - Main.REACH_TIME * 1000;
+			int gap = 125;
+			beats = new Beat[] {
+				new Beat(startTime, "S"),
+				new Beat(startTime + gap * 10, "D"),
+				new Beat(startTime + gap * 20, "F"),
+				new Beat(startTime + gap * 30, "J"),
+			};
+		}
+		
+	}
+	
+	public void dropNotes()
+	{
+		
+		int i = 0;
+		while(!isInterrupted())
+		{
+			boolean dropped = false;
+			if(beats[i].getTime() <= gameMusic.getTime())
+			{
+				Note note = new Note(beats[i].getNoteName());
+				note.start();
+				noteList.add(note);
+				dropped = true;
+				
+				i++;
+				if(i == beats.length)
+				{
+					break;
+				}
+			}
+			
+			//If it does not drop notes, sleep the thread
+			if(dropped == false)
+			{
+				try
+				{
+					Thread.sleep(5);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 		
 	}
 	

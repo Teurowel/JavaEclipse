@@ -12,28 +12,58 @@ public class Note extends Thread
 	
 	//Note Position
 	private int x = 0;
-	private int y = 580 - 1000 / Main.NOTE_DROPDELAY * Main.NOTE_DROPSPEED;
+	private int y = 580 - (1000 / Main.NOTE_DROPDELAY * Main.NOTE_DROPSPEED) * Main.REACH_TIME;
 	
 	//Note Type
 	private String noteType;
 	
-	public Note(int x, String noteType)
+	public Note(String noteType)
 	{
-		this.x = x;
 		this.noteType = noteType;
+		
+		if(noteType.equals("S"))
+		{
+			x = 228;
+		}
+		else if(noteType.equals("D"))
+		{
+			x = 332;
+		}
+		else if(noteType.equals("F"))
+		{
+			x = 436;
+		}
+		else if(noteType.equals("Space"))
+		{
+			x = 540;
+		}
+		else if(noteType.equals("J"))
+		{
+			x = 744;
+		}
+		else if(noteType.equals("K"))
+		{
+			x = 848;
+		}
+		else if(noteType.equals("L"))
+		{
+			x = 952;
+		}
+		
 	}
 	
 	public void screenDraw(Graphics2D g)
 	{
-		if(noteType.equals("short"))
-		{
-			g.drawImage(noteBasicImage, x, y, null);
-		}
-		else if(noteType.equals("long"))
+		if(noteType.equals("Space"))
 		{
 			g.drawImage(noteBasicImage, x, y, null);
 			g.drawImage(noteBasicImage, x + 100, y, null);
 		}
+		else
+		{
+			g.drawImage(noteBasicImage, x, y, null);
+		}
+		
 	}
 	
 	public void drop()
