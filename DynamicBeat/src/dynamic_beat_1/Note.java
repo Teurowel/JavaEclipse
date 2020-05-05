@@ -12,10 +12,12 @@ public class Note extends Thread
 	
 	//Note Position
 	private int x = 0;
-	private int y = 580 - (1000 / Main.NOTE_DROPDELAY * Main.NOTE_DROPSPEED) * Main.REACH_TIME;
+	private int y = 10;//580 - (1000 / Main.NOTE_DROPDELAY * Main.NOTE_DROPSPEED) * Main.REACH_TIME;
 	
 	//Note Type
 	private String noteType;
+	
+	private boolean proceeded = true;
 	
 	public Note(String noteType)
 	{
@@ -69,6 +71,14 @@ public class Note extends Thread
 	public void drop()
 	{
 		y += Main.NOTE_DROPSPEED;
+		
+		
+		//Note miss
+		if(y >= 620)
+		{
+			System.out.println("Miss");
+			close();
+		}
 	}
 	
 	@Override
@@ -79,12 +89,83 @@ public class Note extends Thread
 			while(true)
 			{
 				drop();
-				Thread.sleep(Main.NOTE_DROPDELAY);
+				
+				if(proceeded)
+				{
+					Thread.sleep(Main.NOTE_DROPDELAY);
+				}
+				else
+				{
+					interrupt();
+					break;
+				}
+				
+				
 			}
 		}
 		catch(Exception e)
 		{
 			System.err.println(e.getMessage());
 		}
+	
+		
 	}
+	
+	public void close()
+	{
+		proceeded = false;
+	}
+	
+	public void judge()
+	{
+		System.out.println(y);
+		
+		if(y >= 620)
+		{
+			System.out.println("Late");
+			close();
+		}
+		else if(y >= 606)
+		{
+			System.out.println("Good");
+			close();
+		}
+		else if(y >= 593)
+		{
+			System.out.println("Great");
+			close();
+		}
+		else if(y >= 580)
+		{
+			System.out.println("Perfect");
+			close();
+		}
+		else if(y >= 566)
+		{
+			System.out.println("Great");
+			close();
+		}
+		else if(y >= 553)
+		{
+			System.out.println("Good");
+			close();
+		}
+		else if(y >= 540)
+		{
+			System.out.println("Early");
+			close();
+		}
+	}
+	
+	public boolean getProceeded()
+	{
+		return proceeded;
+	}
+	
+	public String getNoteType()
+	{
+		return noteType;
+	}
+	
+	
 }

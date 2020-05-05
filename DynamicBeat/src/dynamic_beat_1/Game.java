@@ -111,7 +111,16 @@ public class Game extends Thread
 		for(int i = 0; i < noteList.size(); ++i) 
 		{
 			Note note = noteList.get(i);
-			note.screenDraw(g);
+			if(note.getProceeded() == false)
+			{
+				noteList.remove(i);
+				--i;
+			}
+			else
+			{
+				note.screenDraw(g);
+			}
+			
 		}
 	}
 	
@@ -123,9 +132,12 @@ public class Game extends Thread
 	
 	public void pressS()
 	{
+		judge("S");
+		
 		noteRouteSImage = noteRoutePressedImage;
 	
 		new Music("drumSmall1.mp3", false).start();
+		
 	}
 	
 	public void releaseS()
@@ -135,6 +147,8 @@ public class Game extends Thread
 	
 	public void pressD()
 	{
+		judge("D");
+		
 		noteRouteDImage = noteRoutePressedImage;
 		
 		new Music("drumSmall1.mp3", false).start();
@@ -147,6 +161,8 @@ public class Game extends Thread
 	
 	public void pressF()
 	{
+		judge("F");
+		
 		noteRouteFImage = noteRoutePressedImage;
 		
 		new Music("drumSmall1.mp3", false).start();
@@ -159,6 +175,8 @@ public class Game extends Thread
 	
 	public void pressSpace()
 	{
+		judge("Space");
+		
 		noteRouteSpace1Image = noteRoutePressedImage;
 		noteRouteSpace2Image = noteRoutePressedImage;
 		
@@ -173,6 +191,8 @@ public class Game extends Thread
 	
 	public void pressJ()
 	{
+		judge("J");
+		
 		noteRouteJImage = noteRoutePressedImage;
 		
 		new Music("drumSmall1.mp3", false).start();
@@ -185,6 +205,8 @@ public class Game extends Thread
 	
 	public void pressK()
 	{
+		judge("K");
+		
 		noteRouteKImage = noteRoutePressedImage;
 
 		new Music("drumSmall1.mp3", false).start();
@@ -197,6 +219,8 @@ public class Game extends Thread
 	
 	public void pressL()
 	{
+		judge("L");
+		
 		noteRouteLImage = noteRoutePressedImage;
 
 		new Music("drumSmall1.mp3", false).start();
@@ -222,9 +246,9 @@ public class Game extends Thread
 			int gap = 125;
 			beats = new Beat[] {
 				new Beat(startTime, "S"),
-				new Beat(startTime + gap * 10, "D"),
-				new Beat(startTime + gap * 20, "F"),
-				new Beat(startTime + gap * 30, "J"),
+				//new Beat(startTime + gap * 10, "D"),
+				//new Beat(startTime + gap * 20, "F"),
+				//new Beat(startTime + gap * 30, "J"),
 			};
 		}
 		
@@ -264,7 +288,20 @@ public class Game extends Thread
 				}
 			}
 		}
-		
+	}
+	
+	public void judge(String input)
+	{
+		for(int i = 0; i < noteList.size(); ++i)
+		{
+			Note note = noteList.get(i);
+			
+			if(input.equals(note.getNoteType()))
+			{
+				note.judge();
+				break;
+			}
+		}
 	}
 	
 }
